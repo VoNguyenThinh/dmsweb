@@ -12,6 +12,8 @@ import Tracking from '../components/Devices/Tracking'
 import MaUsers from '../components/User/MaUsers'
 import DeviHistory from '../components/Devices/DeviHistory'
 import Error from '../components/Error/Error'
+import Profile from '../components/User/Profile'
+import ChangePwd from '../components/User/ChangePwd'
 // -----------------------[ COMPONENTS ]--------------------------------------------
 export default function MainRouter() {
 
@@ -24,6 +26,8 @@ export default function MainRouter() {
                 <MainLayout>
                     <Switch>
                         <ProtectedRoute ROLE={CFG.ROLE.ALL} path={CFG.PATH.DEVICES} component={Devices} />
+                        <ProtectedRoute ROLE={CFG.ROLE.ALL} path={CFG.PATH.PROFILE} component={Profile} />
+                        <ProtectedRoute ROLE={CFG.ROLE.ALL} path={CFG.PATH.CHANGEPWD} component={ChangePwd} />
                         <ProtectedRoute ROLE={CFG.ROLE.AD} path={CFG.PATH.MaDEVICES} component={MaDevices} />
                         <ProtectedRoute ROLE={CFG.ROLE.AD} path={CFG.PATH.MaUSERS} component={MaUsers} />
                         <ProtectedRoute ROLE={CFG.ROLE.AD} path={CFG.PATH.MaTRACKING} component={Tracking} />

@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
-import usersApi from '../../api/setup/usersApi'
+import loginApi from '../../api/setup/loginAPI'
 // ----------------------------------------------------------------------------
 import 'antd/dist/antd.css'
-import { Row, Col } from 'antd';
-import { Form, Input, Button, Divider } from 'antd';
+import { Form, Input, Button, Divider, Row, Col, notification } from 'antd';
 import { UserOutlined, LockOutlined, KeyOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
 // -----------------------------------------------------------------------------
@@ -28,13 +27,17 @@ export default function Signin(props) {
 
         const login = async () => {
             try {
-                const response = await usersApi.post(body)
+                const response = await loginApi.post(body)
                 localStorage.setItem("access_token", response.data.jwt)
                 localStorage.setItem("isLogin", "true")
-                console.log('sucess')
                 history.push('/devices')
             } catch (error) {
-                alert("User do not exist")
+                // alert("User do not exist")
+                notification.error({
+                    message: <b>Notification </b>,
+                    description: 'Error: Incorrect username or password !',
+                    // style: { marginRight: '150px', top: "20px" }
+                })
                 console.log('Failed to post: ', error);
             }
         }
@@ -55,7 +58,8 @@ export default function Signin(props) {
                     }}
                         xs={20} sm={16} md={12} lg={8} xl={6} span={6}>
 
-                        <Divider plain>LOGIN FORM</Divider>
+                        <Divider plain><h3>LOGIN FORM</h3></Divider>
+
                         <Form
                             onFinish={login}
                         >
@@ -65,6 +69,7 @@ export default function Signin(props) {
                             >
                                 <Input onChange={Email} size='large' placeholder="Email" prefix={<UserOutlined />} />
                             </Form.Item>
+
 
                             <Form.Item
                                 name="password"
@@ -80,6 +85,8 @@ export default function Signin(props) {
                             </Form.Item>
 
                         </Form>
+
+
                     </Col>
 
                     <Col xs={2} sm={4} md={6} lg={8} xl={9} span={9} />

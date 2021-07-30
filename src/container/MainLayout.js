@@ -9,10 +9,12 @@ import jwt_decode from "jwt-decode";
 export default function MainLayout(props) {
     const { Content, Footer, Sider } = Layout;
     const token = localStorage.getItem('access_token')
+    const usname = localStorage.getItem('usn')
+
     const userIfo = jwt_decode(token)
     return (
         <Layout>
-            <DinamicHeader name={userIfo.fullname} />
+            <DinamicHeader name={usname} />
             <Layout>
                 <Sider>
                     <Sidebar key='1' role={userIfo.is_admin} />

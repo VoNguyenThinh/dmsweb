@@ -81,7 +81,7 @@ export default function AdDevices() {
     // ];
     return (
         <div>
-            Devices list---
+            Devices list
         </div>
         // <Table columns={columns} dataSource={data} />
     )

@@ -9,10 +9,18 @@ const userApi = {
         const url = `/users/${id}`;
         return axiosClient.get(url);
     },
-    post: (body) => {
-        const url = '/users/loginapi';
-        return axiosClient.post(url, body);
-    }
+    getUserIfo: () => {
+        const url = '/users/userview';
+        return axiosClient.get(url);
+    },
+    changePwd: (body) => {
+        const url = '/users/changepassword';
+        return axiosClient.put(url, body);
+    },
+    changeIfo: (body) => {
+        const url = '/users/userupdate';
+        return axiosClient.put(url, body);
+    },
 }
 
 

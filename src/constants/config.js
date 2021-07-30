@@ -7,6 +7,8 @@ export const PATH = {
     MaUSERS: '/manage-users',
     MaTRACKING: '/tracking',
     DVHISTORY: '/devices-history',
+    PROFILE: '/profile',
+    CHANGEPWD: '/change-password',
     ERROR: '/*'
 }
 export const ROLE = {
