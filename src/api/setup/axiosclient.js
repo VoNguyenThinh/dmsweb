@@ -7,9 +7,11 @@ const axiosClient = axios.create({
     headers: {
         'content-type': 'application/json',
     },
-    paramsSerializer: params => queryString.stringify(params),
+    paramsSerializer: params => {
+        // console.log(params)
+        return queryString.stringify(params)
+    },
 });
-
 
 axiosClient.interceptors.request.use(async (config) => {
     const token = localStorage.getItem('access_token')

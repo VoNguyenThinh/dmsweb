@@ -5,10 +5,16 @@ export const PATH = {
     DEVICES: '/devices',
     MaDEVICES: '/manage-devices',
     MaUSERS: '/manage-users',
-    MaTRACKING: '/tracking',
+    ACCEPTED: '/accepted-device',
     DVHISTORY: '/devices-history',
     PROFILE: '/profile',
     CHANGEPWD: '/change-password',
+    ADDUSER: '/add-users',
+    EDITUSER: '/edit-users',
+    ADDDEVICES: '/add-devices',
+    EDITDEVICES: '/edit-device',
+    DETAIL_DEVICES: '/detail-device',
+    REQUEST: '/mange-request',
     ERROR: '/*'
 }
 export const ROLE = {

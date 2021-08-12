@@ -1,9 +1,9 @@
 import axiosClient from "./axiosclient";
 
 const userApi = {
-    getAll: (params) => {
-        const url = '/users';
-        return axiosClient.get(url, { params });
+    getAll: () => {
+        const url = '/users/list';
+        return axiosClient.get(url);
     },
     get: (id) => {
         const url = `/users/${id}`;
@@ -21,7 +21,23 @@ const userApi = {
         const url = '/users/userupdate';
         return axiosClient.put(url, body);
     },
-}
+    updateUser: (body) => {
+        const url = '/users/manage/updateuser';
+        return axiosClient.post(url, body);
+    },
+    addUser: (body) => {
+        const url = '/users/manage/adduser';
+        return axiosClient.post(url, body);
+    },
+    deleteUser: (body) => {
+        const url = '/users/manage/deleteuser';
+        return axiosClient.put(url, body);
+    },
+    ViewUser: (id) => {
+        const url = '/users/manage/viewuser/';
 
+        return axiosClient.get(url + id);
+    },
+}
 
 export default userApi;
