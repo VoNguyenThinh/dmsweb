@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Menu } from 'antd';
-import { LaptopOutlined, CheckCircleOutlined, PullRequestOutlined, UserOutlined, PlusCircleOutlined, HistoryOutlined, UserAddOutlined, OrderedListOutlined } from '@ant-design/icons';
+import { LaptopOutlined, CheckCircleOutlined, BarChartOutlined, PullRequestOutlined, UserOutlined, PlusCircleOutlined, HistoryOutlined, UserAddOutlined, OrderedListOutlined } from '@ant-design/icons';
 import * as URL from '../../constants/config'
 export default function Sidebar(props) {
     const isRole = props.role
@@ -9,7 +9,7 @@ export default function Sidebar(props) {
     const renderItem = () => {
         if (isRole) {
             return (
-                <Menu theme='dark' defaultSelectedKeys={['']}>
+                <Menu theme='dark' defaultSelectedKeys={['1']}>
                     <Menu.Item key='1' icon={<LaptopOutlined />}>
                         <Link to={URL.PATH.DEVICES}>Devices</Link>
                     </Menu.Item>
@@ -29,6 +29,9 @@ export default function Sidebar(props) {
                     </Menu.Item>
                     <Menu.Item key='6' icon={<CheckCircleOutlined />}>
                         <Link to={URL.PATH.ACCEPTED}>Accepted devices</Link>
+                    </Menu.Item>
+                    <Menu.Item key='7' icon={<BarChartOutlined />}>
+                        <Link to={URL.PATH.TRACKING}>Devices traking</Link>
                     </Menu.Item>
                 </Menu>
             )

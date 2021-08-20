@@ -38,6 +38,10 @@ const userApi = {
 
         return axiosClient.get(url + id);
     },
+    SearchUser: (params) => {
+        const url = '/users/manage/search';
+        return axiosClient.get(url, { params });
+    },
 }
 
 export default userApi;

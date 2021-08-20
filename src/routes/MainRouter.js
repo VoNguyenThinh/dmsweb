@@ -19,6 +19,7 @@ import AddDevices from '../components/Devices/AddDevices'
 import EditDevices from '../components/Devices/EditDevices'
 import DetailDevice from '../components/Devices/Detail_Device'
 import Request from '../components/Requests/RequestList'
+import Tracking from '../components/Tracking.js/Tracking'
 // -----------------------[ COMPONENTS ]--------------------------------------------
 export default function MainRouter() {
 
@@ -42,6 +43,8 @@ export default function MainRouter() {
                         <ProtectedRoute ROLE={CFG.ROLE.AD} path={CFG.PATH.EDITUSER + `/:id`} component={EditUser} />
                         <ProtectedRoute ROLE={CFG.ROLE.AD} path={CFG.PATH.REQUEST} component={Request} />
                         <ProtectedRoute ROLE={CFG.ROLE.AD} path={CFG.PATH.ACCEPTED} component={AcceptedDevice} />
+                        <ProtectedRoute ROLE={CFG.ROLE.AD} path={CFG.PATH.TRACKING} component={Tracking} />
+
 
                         <ProtectedRoute ROLE={CFG.ROLE.US} path={CFG.PATH.DVHISTORY} component={DeviHistory} />
                         <ProtectedRoute ROLE={CFG.ROLE.ALL} path={CFG.PATH.ERROR} component={Error} />

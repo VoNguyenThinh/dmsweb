@@ -15,6 +15,7 @@ export const PATH = {
     EDITDEVICES: '/edit-device',
     DETAIL_DEVICES: '/detail-device',
     REQUEST: '/mange-request',
+    TRACKING: "/tracking",
     ERROR: '/*'
 }
 export const ROLE = {

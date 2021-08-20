@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { Table, Tag, Space, Button, Popconfirm, notification, Divider } from 'antd';
-// import { Link } from 'react-router-dom';
-// import { CheckSquareOutlined } from '@ant-design/icons';
-// import * as CF from '../../constants/config'
 import reqAPI from '../../api/setup/reqApi';
 import { InfoCircleOutlined } from '@ant-design/icons'
 export default function AcceptedDevice() {
@@ -109,7 +106,6 @@ export default function AcceptedDevice() {
         <>
             <Divider style={{ marginBottom: '25px', marginTop: '5px' }} orientation="left">Mange accepted devices</Divider>
             <Table rowKey={'id'} size='large' columns={columns} pagination={pagination} dataSource={data} />
-
         </>
     )
 }

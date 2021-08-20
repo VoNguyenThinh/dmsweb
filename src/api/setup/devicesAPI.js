@@ -19,5 +19,9 @@ const devicesAPI = {
         const url = '/devices/manage/updatedevice';
         return axiosClient.post(url, body);
     },
+    searchDevice: (params) => {
+        const url = '/devices/manage/search';
+        return axiosClient.get(url, { params });
+    },
 }
 export default devicesAPI;
