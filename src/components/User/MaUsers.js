@@ -1,10 +1,11 @@
-import { Table, Tag, Space, Button, Row, Col, Input, Popconfirm, notification } from 'antd';
+import { Table, Tag, Space, Button, Row, Col, Input, Popconfirm, notification, Divider } from 'antd';
 import { EditOutlined, DeleteOutlined, InfoCircleOutlined, SearchOutlined, RedoOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import * as CF from '../../constants/config'
 import usersApi from '../../api/setup/usersApi'
 import Highlighter from 'react-highlight-words';
+import '../../assets/styles/index.css'
 
 export default function MaUsers() {
     const [data, setData] = useState()
@@ -66,7 +67,7 @@ export default function MaUsers() {
             ),
     });
 
-    const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    const handleSearch = (selectedKeys) => {
         // confirm();
         const params = {
             name: selectedKeys[0]
@@ -86,6 +87,7 @@ export default function MaUsers() {
     const handleReset = clearFilters => {
         clearFilters();
         searchedColumn({})
+        document.location.reload()
     };
 
     const userDelete = (id) => {
@@ -129,6 +131,8 @@ export default function MaUsers() {
             title: 'USERNAME',
             dataIndex: 'username',
             key: 'username',
+            ...getColumnSearchProps('username'),
+
         },
         {
             title: 'FULLNAME',
@@ -191,11 +195,14 @@ export default function MaUsers() {
     return (
         <>
             <Row >
-                <Button align="right" style={{ marginBottom: '5px' }} onClick={() => { document.location.reload(); }} icon={<RedoOutlined />} type='primary'>
-                    Refesh
-                </Button>
                 <Col span={24}>
-                    <Table pagination={pagination} dataSource={data} columns={columns} rowKey={'id'} />
+                    <Divider style={{ margin: '0px' }} orientation="center">USER LIST</Divider>
+                    <Button size='middle' align="right" style={{ marginBottom: '5px' }} onClick={() => { document.location.reload(); }} icon={<RedoOutlined />} type='primary'>
+                        Refesh
+                    </Button>
+                </Col>
+                <Col span={24}>
+                    <Table size='middle' pagination={pagination} dataSource={data} columns={columns} rowKey={'id'} />
                 </Col>
             </Row>
         </>

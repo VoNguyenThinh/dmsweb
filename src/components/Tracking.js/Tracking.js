@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Table, Tag, Space, Form, Button, DatePicker, message } from 'antd';
 import trackingAPI from '../../api/setup/trackingAPI';
+import '../../assets/styles/index.css'
+
 export default function Tracking() {
     const [data, setData] = useState()
 

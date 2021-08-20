@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Col, Row, Space, Table, Tag, Input } from 'antd';
+import { Button, Col, Row, Space, Table, Tag, Input, Divider } from 'antd';
 import { Link } from 'react-router-dom';
-import Highlighter from 'react-highlight-words';
 import { BarsOutlined, EditOutlined, RedoOutlined, LaptopOutlined, DesktopOutlined, MobileOutlined, SearchOutlined } from '@ant-design/icons';
 import devicesAPI from '../../api/setup/devicesAPI'
 import * as CF from '../../constants/config'
 import { Role } from '../../utils/FuntionConfig'
+import '../../assets/styles/index.css'
+
 export default function AdDevices() {
     const [data, setData] = useState()
-    const [searchText, searchedColumn] = useState()
     useEffect(() => {
         const fetchAllUser = async () => {
             try {
@@ -23,12 +23,10 @@ export default function AdDevices() {
     const pagination = {
         position: ["bottomcenter"],
         defaultPageSize: 10,
-        pageSize: 6,
+        pageSize: 7,
 
     }
-
     // ------------------------------------------------------------------------------
-
     const getColumnSearchProps = dataIndex => ({
         filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
             <div style={{ padding: 8 }}>
@@ -38,6 +36,7 @@ export default function AdDevices() {
                     onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
                     onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
                     style={{ marginBottom: 8, display: 'block' }}
+                    size='small'
                 />
                 <Space>
                     <Button
@@ -49,40 +48,22 @@ export default function AdDevices() {
                     >
                         Search
                     </Button>
-                    <Button onClick={() => handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+                    <Button onClick={() => handleReset(clearFilters)} size="small" style={{ width: 95 }}>
                         Reset
                     </Button>
                 </Space>
             </div>
         ),
         filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
-        onFilter: (value, record) =>
-            record[dataIndex]
-                ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
-                : '',
-        render: text =>
-            searchedColumn === dataIndex ? (
-                <Highlighter
-                    highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-                    searchWords={[searchText]}
-                    autoEscape
-                    textToHighlight={text ? text.toString() : ''}
-                />
-            ) : (
-                text
-            ),
     });
-
-    const handleSearch = (selectedKeys, confirm, dataIndex) => {
-        confirm();
-        // searchedColumn(selectedKeys[0])
+    const handleSearch = (selectedKeys) => {
         const params = {
             device: selectedKeys[0]
         }
+        console.log(params)
         const searchDivice = async () => {
             try {
                 const response = await devicesAPI.searchDevice(params);
-                console.log(response.data)
                 setData(response.data)
             } catch (error) {
                 console.log('Failed to fetch: ', error);
@@ -90,14 +71,11 @@ export default function AdDevices() {
         }
         searchDivice();
     };
-
     const handleReset = clearFilters => {
         clearFilters();
-        searchedColumn({})
+        document.location.reload()
     };
     // ------------------------------------------------------------------------------
-
-
     const columns = [
         { title: 'ID', dataIndex: 'id', key: 'id', width: "10%" },
         {
@@ -109,27 +87,7 @@ export default function AdDevices() {
             dataIndex: 'device_type',
             key: 'device_type',
             width: "17.5%",
-            filters: [
-                {
-                    text: 'Phone',
-                    value: 'Phone',
-                },
-                {
-                    text: 'Tablet',
-                    value: 'Tablet',
-                },
-                {
-                    text: 'Laptop',
-                    value: 'Laptop',
-                },
-                {
-                    text: 'Desktop',
-                    value: 'Desktop',
-                },
-            ],
-            onFilter: (value, record) => {
-                return record.device_type.indexOf(value) === 0
-            },
+            ...getColumnSearchProps('device_type'),
             render: (text) => {
                 if (text === 'Laptop') {
                     return (
@@ -152,7 +110,6 @@ export default function AdDevices() {
                 }
             }
         },
-
         {
             title: 'STATUS', dataIndex: 'is_active', key: 'is_active',
             filters: [
@@ -166,7 +123,6 @@ export default function AdDevices() {
                 },
             ],
             onFilter: (value, record) => {
-
                 return record.is_active.toString().indexOf(value) === 0
             },
 
@@ -213,13 +169,13 @@ export default function AdDevices() {
 
     ];
     return (
-        <div>
+        <>
 
             <Row>
 
                 <Col span={24}>
-
-                    <Button align="right" style={{ marginBottom: '5px' }} onClick={() => { document.location.reload(); }} icon={<RedoOutlined />} type='primary'>
+                    <Divider style={{ margin: '0px' }} orientation="center">DEVICES LIST</Divider>
+                    <Button size='middle' align="right" style={{ marginBottom: '5px' }} onClick={() => { document.location.reload(); }} icon={<RedoOutlined />} type='primary'>
                         Refesh
                     </Button>
                 </Col>
@@ -237,7 +193,6 @@ export default function AdDevices() {
                     />
                 </Col>
             </Row>
-
-        </div >
+        </ >
     )
 }

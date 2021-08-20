@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Table, Space, Button, Popconfirm, Divider, Tag, notification } from 'antd';
-import { CheckSquareOutlined, MinusCircleOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import { CheckSquareOutlined, MinusCircleOutlined, InfoCircleOutlined, RedoOutlined } from '@ant-design/icons';
 import reqAPI from '../../api/setup/reqApi';
+import '../../assets/styles/index.css'
 
 export default function RquestList() {
     const [data, setData] = useState()
@@ -10,13 +11,13 @@ export default function RquestList() {
             try {
                 const response = await reqAPI.getAll();
                 setData(response.data)
+                console.log(response.data)
             } catch (error) {
                 console.log('Failed to fetch: ', error);
             }
         }
         fetchAllReq();
     }, []);
-
 
     const handleDecline = (id) => {
         const body = {
@@ -92,12 +93,12 @@ export default function RquestList() {
             // align: 'center'
         },
         {
-            title: 'USERNAME',
+            title: `USER'S NAME`,
             dataIndex: ["user", 'fullname'],
             key: 'fullname',
         },
         {
-            title: 'DEVICE NAME',
+            title: `DEVICE'S NAME`,
             dataIndex: ["device", 'device_name'],
             key: 'devicename',
         },
@@ -142,8 +143,11 @@ export default function RquestList() {
 
     return (
         <>
-            <Divider style={{ marginBottom: '25px', marginTop: '5px' }} orientation="left">Mange Request</Divider>
-            <Table rowKey='id' size='large' columns={columns} pagination={pagination} dataSource={data} />
+            <Divider style={{ margin: "0" }} orientation="center">Mange Request</Divider>
+            <Button size='middle' align="right" style={{ marginBottom: '5px' }} onClick={() => { document.location.reload(); }} icon={<RedoOutlined />} type='primary'>
+                Refesh
+            </Button>
+            <Table rowKey='id' size='middle' columns={columns} pagination={pagination} dataSource={data} />
         </>
     )
 }

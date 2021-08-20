@@ -9,6 +9,10 @@ const trackingAPI = {
     trackingBytime: (body) => {
         const url = '/request/tracking';
         return axiosClient.post(url, body);
-    }
+    },
+    TrakingUser: (params) => {
+        const url = '/users/usertracking';
+        return axiosClient.get(url);
+    },
 }
 export default trackingAPI;

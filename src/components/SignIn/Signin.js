@@ -30,13 +30,13 @@ export default function Signin(props) {
                 const response = await loginApi.post(body)
                 localStorage.setItem("access_token", response.data.jwt)
                 localStorage.setItem("isLogin", "true")
+                localStorage.setItem("selKey", "1")
                 history.push('/devices')
             } catch (error) {
                 // alert("User do not exist")
                 notification.error({
                     message: <b>Notification </b>,
                     description: 'Error: Incorrect username or password !',
-                    // style: { marginRight: '150px', top: "20px" }
                 })
                 console.log('Failed to post: ', error);
             }

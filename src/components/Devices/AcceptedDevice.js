@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Table, Tag, Space, Button, Popconfirm, notification, Divider } from 'antd';
 import reqAPI from '../../api/setup/reqApi';
-import { InfoCircleOutlined } from '@ant-design/icons'
+import { InfoCircleOutlined, RedoOutlined, LeftCircleOutlined } from '@ant-design/icons'
+import '../../assets/styles/index.css'
+
 export default function AcceptedDevice() {
     const [data, setData] = useState()
     const pagination = {
@@ -85,14 +87,13 @@ export default function AcceptedDevice() {
             width: '15%',
 
         },
-
         {
             title: 'Action',
             key: 'action',
             render: (record) => (
                 <Space size="middle">
                     <Popconfirm onConfirm={() => { handleGiveBack(record.id) }} icon={<InfoCircleOutlined />} title="Sure to give back ?">
-                        <Button danger >Give back</Button>
+                        <Button icon={<LeftCircleOutlined />} danger >Give back</Button>
                     </Popconfirm>
                 </Space>
             ),
@@ -104,7 +105,10 @@ export default function AcceptedDevice() {
 
     return (
         <>
-            <Divider style={{ marginBottom: '25px', marginTop: '5px' }} orientation="left">Mange accepted devices</Divider>
+            <Divider style={{ margin: '0' }} orientation="center">Mange accepted devices</Divider>
+            <Button size='middle' align="right" style={{ marginBottom: '5px' }} onClick={() => { document.location.reload(); }} icon={<RedoOutlined />} type='primary'>
+                Refesh
+            </Button>
             <Table rowKey={'id'} size='large' columns={columns} pagination={pagination} dataSource={data} />
         </>
     )
