@@ -1,88 +1,33 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { Table, Tag, Button, Row, Col, Divider, Space, Input } from 'antd';
-import trackingAPI from '../../api/setup/trackingAPI';
-import { RedoOutlined, SearchOutlined } from '@ant-design/icons';
-import '../../assets/styles/index.css'
+import React, { useEffect, useState } from 'react'
+import { useHistory, useParams } from 'react-router-dom'
+import { Table, Tag, Button, Row, Col, Divider } from 'antd';
+import { RedoOutlined, LeftCircleOutlined } from '@ant-design/icons'
+import userApi from '../../api/setup/usersApi'
 
-export default function DeviHistory() {
+export default function HistoryUsed() {
+    const { id } = useParams()
     const [data, setData] = useState()
-    const [searchText, setText] = useState('')
-    const searchInput = useRef(null);
-
+    const history = useHistory()
     const pagination = {
         position: ["bottomcenter"],
         defaultPageSize: 10,
         pageSize: 8
     }
+
     useEffect(() => {
-        const AcceptedDevice = async () => {
+        const params = {
+            id: id
+        }
+        const HistoryUser = async () => {
             try {
-                const response = await trackingAPI.TrakingUser();
+                const response = await userApi.historyUsed(params);
                 setData(response.data)
             } catch (error) {
-                console.log('Failed to fetch: ', error, searchText);
+                console.log('Failed to fetch: ', error);
             }
         }
-        AcceptedDevice();
-    }, []);
-
-    const getColumnSearchProps = dataIndex => ({
-        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-            <div style={{ padding: 8 }}>
-                <Input
-                    ref={searchInput}
-                    placeholder={`Search ${dataIndex}`}
-                    value={selectedKeys[0]}
-                    onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-                    // onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
-                    style={{ marginBottom: 8, display: 'block' }}
-                />
-                <Space>
-                    <Button
-                        type="primary"
-                        onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
-                        icon={<SearchOutlined />}
-                        size="small"
-                        style={{ width: 90 }}
-                    >
-                        Search
-                    </Button>
-                    <Button onClick={() => handleReset(clearFilters)} size="small" style={{ width: 90 }}>
-                        Reset
-                    </Button>
-                </Space>
-            </div>
-        ),
-        filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
-        onFilter: (value, record) => {
-            if (record.device_request.device.device_name) {
-                return record.device_request.device.device_name.toString().toLowerCase().includes(value.toLowerCase())
-            } else {
-                return ''
-            }
-
-        }
-
-
-
-        ,
-
-        onFilterDropdownVisibleChange: visible => {
-            if (visible) {
-                setTimeout(() => searchInput.current.select(), 100);
-            }
-        },
-    });
-
-    const handleSearch = (selectedKeys, confirm,) => {
-        confirm();
-        setText(selectedKeys[0])
-    };
-
-    const handleReset = clearFilters => {
-        // clearFilters();
-        // setState({ searchText: '' });
-    };
+        HistoryUser();
+    }, [id]);
 
     const columns = [
         {
@@ -95,9 +40,8 @@ export default function DeviHistory() {
         {
             title: 'DECIVE NAME ',
             dataIndex: ['device_request', 'device', 'device_name'],
-            key: 'device_name',
+            key: 'devicename',
             align: 'center',
-            ...getColumnSearchProps("device_name"),
             render: (text) => {
                 if (text === null) {
                     return (
@@ -172,14 +116,16 @@ export default function DeviHistory() {
             width: '15%'
         },
 
-    ];
-
+    ]
     return (
         <>
             <Row>
 
                 <Col span={24}>
-                    <Divider style={{ margin: '0px' }} orientation="center">DEVICES LIST</Divider>
+                    <Divider style={{ margin: '0px' }} orientation="center">HISTORY USERD</Divider>
+                    <Button size='middle' align="right" style={{ marginBottom: '5px', marginRight: '7px' }} onClick={() => { history.goBack() }} icon={<LeftCircleOutlined />} type='primary'>
+                        Back to list
+                    </Button>
                     <Button size='middle' align="right" style={{ marginBottom: '5px' }} onClick={() => { document.location.reload(); }} icon={<RedoOutlined />} type='primary'>
                         Refesh
                     </Button>

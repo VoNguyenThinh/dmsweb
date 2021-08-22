@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import { Menu } from 'antd';
 import { LaptopOutlined, CheckCircleOutlined, BarChartOutlined, PullRequestOutlined, UserOutlined, PlusCircleOutlined, HistoryOutlined, UserAddOutlined, OrderedListOutlined } from '@ant-design/icons';
@@ -11,7 +11,7 @@ export default function Sidebar(props) {
         if (isRole) {
             return (
                 <Menu theme='dark' defaultSelectedKeys={[key]}>
-                    <Menu.Item onClick={() => { localStorage.setItem('selKey', '2') }} key='1' icon={<LaptopOutlined />}>
+                    <Menu.Item onClick={() => { localStorage.setItem('selKey', '1') }} key='1' icon={<LaptopOutlined />}>
                         <Link to={URL.PATH.DEVICES}>Devices</Link>
                     </Menu.Item>
                     <Menu.Item onClick={() => { localStorage.setItem('selKey', '2') }} key='2' icon={<PlusCircleOutlined />}>

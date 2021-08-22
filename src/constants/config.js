@@ -7,6 +7,7 @@ export const PATH = {
     MaUSERS: '/manage-users',
     ACCEPTED: '/accepted-device',
     DVHISTORY: '/devices-history',
+    USHISTORY: '/users-history',
     PROFILE: '/profile',
     CHANGEPWD: '/change-password',
     ADDUSER: '/add-users',

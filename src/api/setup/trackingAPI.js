@@ -10,7 +10,7 @@ const trackingAPI = {
         const url = '/request/tracking';
         return axiosClient.post(url, body);
     },
-    TrakingUser: (params) => {
+    TrakingUser: () => {
         const url = '/users/usertracking';
         return axiosClient.get(url);
     },

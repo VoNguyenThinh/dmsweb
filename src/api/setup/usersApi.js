@@ -42,6 +42,10 @@ const userApi = {
         const url = '/users/manage/search';
         return axiosClient.get(url, { params });
     },
+    historyUsed: (params) => {
+        const url = 'users/manage/tracking';
+        return axiosClient.get(url, { params });
+    },
 
 }
 

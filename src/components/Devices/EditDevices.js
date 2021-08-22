@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import { Form, Input, Button, Divider, Row, Col, Select, notification, Space } from 'antd';
 import { SaveOutlined, ArrowLeftOutlined } from '@ant-design/icons';
@@ -8,7 +8,7 @@ export default function EditDevices() {
     const [form] = Form.useForm();
     const { id } = useParams()
     const history = useHistory()
-    const [change, setChange] = useState(false)
+    let change = false
     // ------------------------------GetAPI--------------------------
     useEffect(() => {
         const DeviceInfomation = async () => {
@@ -53,8 +53,8 @@ export default function EditDevices() {
         });
     };
     const handleSubmit = (values => {
-        values.id = id
         if (change) {
+            values.id = id
             const EditDevices = async () => {
                 try {
                     await devicesAPI.editDevice(values);
@@ -66,18 +66,18 @@ export default function EditDevices() {
                         style: { marginTop: '30px' },
 
                     });
-                    console.log('Failed to fetch: ', error);
+                    console.log('Failed to fetch: ', error, change);
                 }
             }
             EditDevices();
         } else {
             notification.warning({
                 message: <b>Warning</b>,
-                description: "Nothing changes",
+                description: "Nothing change!",
                 style: { marginTop: '30px' },
-
             });
         }
+
     }
     )
     return (
@@ -105,11 +105,11 @@ export default function EditDevices() {
                                 { required: true, message: 'Please input devicesname !' },
                             ]}
                         >
-                            <Input onChange={() => { setChange(true) }} />
+                            <Input onChange={() => { change = true; }} />
                         </Form.Item>
 
                         <Form.Item name='device_type' label="Devices Type">
-                            <Select onChange={() => { setChange(true) }}>
+                            <Select onChange={() => { change = true; }}>
                                 <Select.Option value='Phone'>Phone</Select.Option>
                                 <Select.Option value='Tablet'>Tablet </Select.Option>
                                 <Select.Option value='Laptop'>Laptop</Select.Option>
@@ -118,7 +118,7 @@ export default function EditDevices() {
                         </Form.Item>
 
                         <Form.Item name='is_active' label="Devices Status">
-                            <Select onChange={() => { setChange(true) }} >
+                            <Select onChange={() => { change = true; }}>
                                 <Select.Option value={true}>Available</Select.Option>
                                 <Select.Option value={false}>Unavailable</Select.Option>
                             </Select>
@@ -131,7 +131,7 @@ export default function EditDevices() {
                                 { required: true, message: 'Please input devices description !' },
                             ]}>
 
-                            <Input.TextArea onChange={() => { setChange(true) }} rows={3} />
+                            <Input.TextArea rows={3} onChange={() => { change = true; }} />
                         </Form.Item>
                         <Form.Item wrapperCol={{ offset: 5, span: 19 }}>
                             <Button shape='round' block size='large' type="primary" htmlType="submit" icon={<SaveOutlined />}>

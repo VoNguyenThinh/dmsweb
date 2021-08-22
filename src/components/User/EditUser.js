@@ -10,9 +10,8 @@ export default function EditUser() {
     const [form] = Form.useForm();
     const history = useHistory()
 
-    const [change, setChange] = useState(false)
     const [username, setUserame] = useState('')
-
+    let change = false
     // ------------------------------GetAPI--------------------------
     useEffect(() => {
         const fetchUserInfomation = async () => {
@@ -106,12 +105,12 @@ export default function EditUser() {
                             { required: false, message: 'Please input full name !' },
                             { min: 5, message: 'Minimum 5 characters.' }]}
                     >
-                        <Input onChange={() => setChange(true)} size='middle' />
+                        <Input onChange={() => change = true} size='middle' />
                     </Form.Item>
 
                     <Form.Item name="is_admin" label="Role" labelCol={{ span: 5 }}
                         wrapperCol={{ span: 19 }}>
-                        <Select onChange={() => setChange(true)} >
+                        <Select onChange={() => change = true} >
                             <Select.Option value={true}>--- Admin</Select.Option>
                             <Select.Option value={false}>--- User</Select.Option>
                         </Select>

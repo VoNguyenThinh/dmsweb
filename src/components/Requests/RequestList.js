@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react'
-import { Table, Space, Button, Popconfirm, Divider, Tag, notification } from 'antd';
-import { CheckSquareOutlined, MinusCircleOutlined, InfoCircleOutlined, RedoOutlined } from '@ant-design/icons';
+import React, { useEffect, useRef, useState } from 'react'
+import { Table, Space, Button, Popconfirm, Divider, Input, Tag, notification } from 'antd';
+import { CheckSquareOutlined, MinusCircleOutlined, InfoCircleOutlined, SearchOutlined, RedoOutlined } from '@ant-design/icons';
 import reqAPI from '../../api/setup/reqApi';
 import '../../assets/styles/index.css'
 
 export default function RquestList() {
     const [data, setData] = useState()
+    const searchInput = useRef(null);
     useEffect(() => {
         const fetchAllReq = async () => {
             try {
                 const response = await reqAPI.getAll();
                 setData(response.data)
-                console.log(response.data)
             } catch (error) {
                 console.log('Failed to fetch: ', error);
             }
@@ -80,6 +80,60 @@ export default function RquestList() {
         defaultPageSize: 10,
         pageSize: 7
     }
+    const getColumnSearchProps = (dataIndex) => ({
+        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+            <div style={{ padding: 8 }}>
+                <Input
+                    ref={searchInput}
+                    placeholder={`Search here`}
+                    value={selectedKeys[0]}
+                    onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+                    style={{ marginBottom: 8, display: 'block' }}
+                    size='middle'
+                />
+                <Space>
+                    <Button
+                        type="primary"
+                        onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+                        icon={<SearchOutlined />}
+                        size="small"
+                        style={{ width: 90 }}
+                    >
+                        Search
+                    </Button>
+                    <Button onClick={() => handleReset(clearFilters)} size="small" style={{ width: 95 }}>
+                        Reset
+                    </Button>
+                </Space>
+            </div>
+        ),
+        filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
+        onFilterDropdownVisibleChange: visible => {
+            if (visible) {
+                setTimeout(() => searchInput.current.select(), 100);
+            }
+        },
+    });
+    const handleSearch = (selectedKeys) => {
+        const params = {
+            search: selectedKeys[0]
+        }
+        const searchReq = async () => {
+            try {
+                const response = await reqAPI.searchReq(params);
+                console.log(response.data)
+                setData(response.data)
+            } catch (error) {
+                console.log('Failed to fetch: ', error);
+            }
+        }
+        searchReq();
+    };
+    const handleReset = clearFilters => {
+        clearFilters();
+        document.location.reload()
+    };
+
     const columns = [
         {
             title: 'ID REQ',
@@ -90,22 +144,46 @@ export default function RquestList() {
                 return <b>{text}</b>
 
             }
-            // align: 'center'
         },
         {
             title: `USER'S NAME`,
             dataIndex: ["user", 'fullname'],
             key: 'fullname',
+            ...getColumnSearchProps('fullname')
         },
         {
             title: `DEVICE'S NAME`,
             dataIndex: ["device", 'device_name'],
             key: 'devicename',
+            ...getColumnSearchProps('devicename')
+
         },
         {
             title: 'DEVICE TYPE',
             dataIndex: ["device", 'device_type'],
             key: 'devicetype',
+            filters: [
+                {
+                    text: 'Phone',
+                    value: 'Phone',
+                },
+                {
+                    text: 'Tablet',
+                    value: 'Tablet',
+                },
+                {
+                    text: 'Laptop',
+                    value: 'Laptop',
+                },
+                {
+                    text: 'Desktop',
+                    value: 'Desktop computer',
+                },
+
+            ],
+            onFilter: (value, record) => {
+                return record.device.device_type.indexOf(value) === 0
+            },
             render: text => {
                 return <Tag color='geekblue'>{text}</Tag>
             },

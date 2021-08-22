@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react'
-import { Table, Tag, Space, Button, Popconfirm, notification, Divider } from 'antd';
+import React, { useEffect, useRef, useState } from 'react'
+import { Table, Tag, Space, Button, Popconfirm, notification, Input, Divider } from 'antd';
 import reqAPI from '../../api/setup/reqApi';
-import { InfoCircleOutlined, RedoOutlined, LeftCircleOutlined } from '@ant-design/icons'
+import { InfoCircleOutlined, RedoOutlined, LeftCircleOutlined, SearchOutlined } from '@ant-design/icons'
 import '../../assets/styles/index.css'
 
 export default function AcceptedDevice() {
     const [data, setData] = useState()
+    const searchInput = useRef(null);
+
     const pagination = {
         position: ["bottomcenter"],
         defaultPageSize: 10,
@@ -48,24 +50,81 @@ export default function AcceptedDevice() {
         giveBack();
     }
 
+    const getColumnSearchProps = (dataIndex) => ({
+        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+            <div style={{ padding: 8 }}>
+                <Input
+                    ref={searchInput}
+                    placeholder={`Search here`}
+                    value={selectedKeys[0]}
+                    onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+                    style={{ marginBottom: 8, display: 'block' }}
+                    size='middle'
+                />
+                <Space>
+                    <Button
+                        type="primary"
+                        onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+                        icon={<SearchOutlined />}
+                        size="small"
+                        style={{ width: 90 }}
+                    >
+                        Search
+                    </Button>
+                    <Button onClick={() => handleReset(clearFilters)} size="small" style={{ width: 95 }}>
+                        Reset
+                    </Button>
+                </Space>
+            </div>
+        ),
+        filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
+        onFilterDropdownVisibleChange: visible => {
+            if (visible) {
+                setTimeout(() => searchInput.current.select(), 100);
+            }
+        },
+    });
+    const handleSearch = (selectedKeys) => {
+        const params = {
+            search: selectedKeys[0]
+        }
+        const searchReq = async () => {
+            try {
+                const response = await reqAPI.searchAcepted(params);
+                console.log(response.data)
+                setData(response.data)
+            } catch (error) {
+                console.log('Failed to fetch: ', error);
+            }
+        }
+        searchReq();
+    };
+    const handleReset = clearFilters => {
+        clearFilters();
+        document.location.reload()
+    };
+
     const columns = [
         {
             title: 'ID',
             dataIndex: 'id',
             key: 'id',
             width: '10%',
+
         },
         {
             title: 'USER ACCEPTED',
             dataIndex: 'username',
             key: 'username',
             width: '30%',
+            ...getColumnSearchProps('username')
         },
         {
             title: 'DEVICE ACCEPTED',
             dataIndex: 'devicename',
             key: 'devicename',
             width: '30%',
+            ...getColumnSearchProps('devicename')
         },
         {
             title: 'ACCEPTED AT',
@@ -85,7 +144,6 @@ export default function AcceptedDevice() {
             },
             align: 'center',
             width: '15%',
-
         },
         {
             title: 'Action',
@@ -109,7 +167,7 @@ export default function AcceptedDevice() {
             <Button size='middle' align="right" style={{ marginBottom: '5px' }} onClick={() => { document.location.reload(); }} icon={<RedoOutlined />} type='primary'>
                 Refesh
             </Button>
-            <Table rowKey={'id'} size='large' columns={columns} pagination={pagination} dataSource={data} />
+            <Table rowKey={'id'} size='middle' columns={columns} pagination={pagination} dataSource={data} />
         </>
     )
 }

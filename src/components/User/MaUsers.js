@@ -1,5 +1,5 @@
 import { Table, Tag, Space, Button, Row, Col, Input, Popconfirm, notification, Divider } from 'antd';
-import { EditOutlined, DeleteOutlined, InfoCircleOutlined, SearchOutlined, RedoOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, InfoCircleOutlined, SearchOutlined, HistoryOutlined, RedoOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import * as CF from '../../constants/config'
@@ -180,10 +180,14 @@ export default function MaUsers() {
             title: 'ACTION',
             key: 'action',
             width: '15%',
+            align: 'center',
             render: (record) => (
                 <Space size="middle">
                     <Button size='middle' icon={<EditOutlined />} type='primary'>
                         <Link style={{ color: "white" }} to={CF.PATH.EDITUSER + `/${record.id}`}>Edit</Link>
+                    </Button>
+                    <Button size='middle' icon={<HistoryOutlined />} type='primary'>
+                        <Link style={{ color: "white" }} to={CF.PATH.USHISTORY + `/${record.id}`}> History</Link>
                     </Button>
                     <Popconfirm icon={<InfoCircleOutlined />} title="Sure to delete ?" onConfirm={() => { userDelete(record.id) }}>
                         <Button icon={<DeleteOutlined />} danger type='default'>Delete</Button>

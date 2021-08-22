@@ -21,5 +21,13 @@ const reqAPI = {
         const url = '/request/engagementlist';
         return axiosClient.get(url);
     },
+    searchReq: (params) => {
+        const url = '/request/searchrequest';
+        return axiosClient.get(url, { params });
+    },
+    searchAcepted: (params) => {
+        const url = '/request/searchengagement';
+        return axiosClient.get(url, { params });
+    },
 }
 export default reqAPI;

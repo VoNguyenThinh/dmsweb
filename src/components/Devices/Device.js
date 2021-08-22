@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Button, Col, Row, Space, Table, Tag, Input, Divider } from 'antd';
 import { Link } from 'react-router-dom';
 import { BarsOutlined, EditOutlined, RedoOutlined, LaptopOutlined, DesktopOutlined, MobileOutlined, SearchOutlined } from '@ant-design/icons';
@@ -9,6 +9,8 @@ import '../../assets/styles/index.css'
 
 export default function AdDevices() {
     const [data, setData] = useState()
+    const searchInput = useRef(null);
+
     useEffect(() => {
         const fetchAllUser = async () => {
             try {
@@ -23,7 +25,7 @@ export default function AdDevices() {
     const pagination = {
         position: ["bottomcenter"],
         defaultPageSize: 10,
-        pageSize: 7,
+        pageSize: 6,
 
     }
     // ------------------------------------------------------------------------------
@@ -31,12 +33,12 @@ export default function AdDevices() {
         filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
             <div style={{ padding: 8 }}>
                 <Input
+                    ref={searchInput}
                     placeholder={`Search here`}
                     value={selectedKeys[0]}
                     onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-                    onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
                     style={{ marginBottom: 8, display: 'block' }}
-                    size='small'
+                    size='middle'
                 />
                 <Space>
                     <Button
@@ -55,6 +57,11 @@ export default function AdDevices() {
             </div>
         ),
         filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
+        onFilterDropdownVisibleChange: visible => {
+            if (visible) {
+                setTimeout(() => searchInput.current.select(), 100);
+            }
+        },
     });
     const handleSearch = (selectedKeys) => {
         const params = {
@@ -77,21 +84,23 @@ export default function AdDevices() {
     };
     // ------------------------------------------------------------------------------
     const columns = [
-        { title: 'ID', dataIndex: 'id', key: 'id', width: "10%" },
+        { title: 'ID', dataIndex: 'id', key: 'id', width: "5%" },
         {
-            title: 'NAME', dataIndex: 'device_name', key: 'device_name', width: "20%",
+            title: 'NAME', dataIndex: 'device_name', key: 'device_name', width: "20%", align: 'center',
+
             ...getColumnSearchProps('device_name'),
         },
         {
             title: 'TYPE',
             dataIndex: 'device_type',
             key: 'device_type',
-            width: "17.5%",
+            width: "15%",
+            align: 'center',
             ...getColumnSearchProps('device_type'),
             render: (text) => {
                 if (text === 'Laptop') {
                     return (
-                        <Tag icon={<LaptopOutlined />} color='geekblue'>{text}</Tag>
+                        <Tag icon={<LaptopOutlined />} color='magenta'>{text}</Tag>
                     );
                 }
                 if (text === 'Phone') {
@@ -105,13 +114,14 @@ export default function AdDevices() {
                     );
                 } else {
                     return (
-                        <Tag icon={<DesktopOutlined />} color='gold'>{text}</Tag>
+                        <Tag icon={<DesktopOutlined />} color='purple'>{text}</Tag>
                     );
                 }
             }
         },
         {
-            title: 'STATUS', dataIndex: 'is_active', key: 'is_active',
+            title: 'STATUS', dataIndex: 'is_active', key: 'is_active', align: 'center',
+
             filters: [
                 {
                     text: 'Available',
@@ -138,7 +148,12 @@ export default function AdDevices() {
                 }
             }
         },
-        { title: 'CREATE_AT', dataIndex: 'created_at', key: 'created_at', width: "17.5%", align: 'center' },
+        {
+            title: 'CREATE_AT', dataIndex: 'created_at', key: 'created_at', width: "17.5%", align: 'center',
+            render: text => {
+                return <Tag color={'gold'}>{text}</Tag>
+            }
+        },
         {
             title: 'ACTION', key: 'created_at', align: 'center', render: (record) => {
                 const role = Role()
@@ -164,15 +179,12 @@ export default function AdDevices() {
 
                 }
             },
-            width: '21%'
         },
 
     ];
     return (
         <>
-
             <Row>
-
                 <Col span={24}>
                     <Divider style={{ margin: '0px' }} orientation="center">DEVICES LIST</Divider>
                     <Button size='middle' align="right" style={{ marginBottom: '5px' }} onClick={() => { document.location.reload(); }} icon={<RedoOutlined />} type='primary'>
@@ -180,7 +192,6 @@ export default function AdDevices() {
                     </Button>
                 </Col>
                 <Col span={24}>
-
                     <Table
                         size='middle'
                         pagination={pagination}
