@@ -136,7 +136,7 @@ export default function HistoryUsed() {
             <Row>
 
                 <Col span={24}>
-                    <Divider style={{ margin: '0px' }} orientation="center">HISTORY USERD</Divider>
+                    <Divider style={{ margin: '0px' }} orientation="center">HISTORY USED</Divider>
                     <Button size='middle' align="right" style={{ marginBottom: '5px', marginRight: '7px' }} onClick={() => { history.goBack() }} icon={<LeftCircleOutlined />} type='primary'>
                         Back to list
                     </Button>
