@@ -43,11 +43,11 @@ export default function Tracking() {
                         onClick={() => handleSearch(confirm)}
                         icon={<SearchOutlined />}
                         size="small"
-                        style={{ width: 137.5 }}
+                        style={{ width: 150 }}
                     >
                         Search
                     </Button>
-                    <Button onClick={() => handleReset(clearFilters)} size="small" style={{ width: 137.6 }}>
+                    <Button onClick={() => handleReset(clearFilters)} size="small" style={{ width: 155 }}>
                         Reset
                     </Button>
                 </Space>
