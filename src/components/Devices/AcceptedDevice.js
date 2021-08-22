@@ -84,7 +84,7 @@ export default function AcceptedDevice() {
             }
         },
     });
-    const handleSearch = (selectedKeys) => {
+    const handleSearch = (selectedKeys, confirm) => {
         const params = {
             search: selectedKeys[0]
         }
@@ -98,6 +98,7 @@ export default function AcceptedDevice() {
             }
         }
         searchReq();
+        confirm()
     };
     const handleReset = clearFilters => {
         clearFilters();
@@ -160,11 +161,21 @@ export default function AcceptedDevice() {
 
         },
     ];
-
+    const handleRefesh = () => {
+        const AcceptedDevice = async () => {
+            try {
+                const response = await reqAPI.getAccepted();
+                setData(response.data)
+            } catch (error) {
+                console.log('Failed to fetch: ', error);
+            }
+        }
+        AcceptedDevice();
+    }
     return (
         <>
             <Divider style={{ margin: '0' }} orientation="center">Mange accepted devices</Divider>
-            <Button size='middle' align="right" style={{ marginBottom: '5px' }} onClick={() => { document.location.reload(); }} icon={<RedoOutlined />} type='primary'>
+            <Button size='middle' align="right" style={{ marginBottom: '5px' }} onClick={handleRefesh} icon={<RedoOutlined />} type='primary'>
                 Refesh
             </Button>
             <Table rowKey={'id'} size='middle' columns={columns} pagination={pagination} dataSource={data} />

@@ -38,7 +38,7 @@ export default function AdDevices() {
                     value={selectedKeys[0]}
                     onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
                     style={{ marginBottom: 8, display: 'block' }}
-                    size='middle'
+                    size='small'
                 />
                 <Space>
                     <Button
@@ -63,7 +63,7 @@ export default function AdDevices() {
             }
         },
     });
-    const handleSearch = (selectedKeys) => {
+    const handleSearch = (selectedKeys, confirm) => {
         const params = {
             device: selectedKeys[0]
         }
@@ -77,11 +77,23 @@ export default function AdDevices() {
             }
         }
         searchDivice();
+        confirm()
     };
     const handleReset = clearFilters => {
         clearFilters();
         document.location.reload()
     };
+    const handlRefesh = () => {
+        const fetchAllUser = async () => {
+            try {
+                const response = await devicesAPI.getAll();
+                setData(response.data)
+            } catch (error) {
+                console.log('Failed to fetch: ', error);
+            }
+        }
+        fetchAllUser();
+    }
     // ------------------------------------------------------------------------------
     const columns = [
         { title: 'ID', dataIndex: 'id', key: 'id', width: "5%" },
@@ -187,7 +199,7 @@ export default function AdDevices() {
             <Row>
                 <Col span={24}>
                     <Divider style={{ margin: '0px' }} orientation="center">DEVICES LIST</Divider>
-                    <Button size='middle' align="right" style={{ marginBottom: '5px' }} onClick={() => { document.location.reload(); }} icon={<RedoOutlined />} type='primary'>
+                    <Button size='middle' align="right" style={{ marginBottom: '5px' }} onClick={handlRefesh} icon={<RedoOutlined />} type='primary'>
                         Refesh
                     </Button>
                 </Col>

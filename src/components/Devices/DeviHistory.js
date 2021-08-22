@@ -24,7 +24,7 @@ export default function DeviHistory() {
             }
         }
         AcceptedDevice();
-    }, []);
+    }, [searchText]);
 
     const getColumnSearchProps = dataIndex => ({
         filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
@@ -62,11 +62,7 @@ export default function DeviHistory() {
             }
 
         }
-
-
-
         ,
-
         onFilterDropdownVisibleChange: visible => {
             if (visible) {
                 setTimeout(() => searchInput.current.select(), 100);
@@ -80,9 +76,20 @@ export default function DeviHistory() {
     };
 
     const handleReset = clearFilters => {
-        // clearFilters();
-        // setState({ searchText: '' });
+        clearFilters();
     };
+
+    const handdleRefesh = () => {
+        const AcceptedDevice = async () => {
+            try {
+                const response = await trackingAPI.TrakingUser();
+                setData(response.data)
+            } catch (error) {
+                console.log('Failed to fetch: ', error, searchText);
+            }
+        }
+        AcceptedDevice();
+    }
 
     const columns = [
         {
@@ -177,10 +184,9 @@ export default function DeviHistory() {
     return (
         <>
             <Row>
-
                 <Col span={24}>
                     <Divider style={{ margin: '0px' }} orientation="center">DEVICES LIST</Divider>
-                    <Button size='middle' align="right" style={{ marginBottom: '5px' }} onClick={() => { document.location.reload(); }} icon={<RedoOutlined />} type='primary'>
+                    <Button size='middle' align="right" style={{ marginBottom: '5px' }} onClick={handdleRefesh} icon={<RedoOutlined />} type='primary'>
                         Refesh
                     </Button>
                 </Col>

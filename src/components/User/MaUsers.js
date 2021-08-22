@@ -10,7 +10,6 @@ import '../../assets/styles/index.css'
 export default function MaUsers() {
     const [data, setData] = useState()
     const [searchText, searchedColumn] = useState()
-    // }
 
     useEffect(() => {
         const fetchAllUser = async () => {
@@ -28,6 +27,7 @@ export default function MaUsers() {
             <div style={{ padding: 8 }}>
                 <Input
                     placeholder={`Search ${dataIndex}`}
+                    size={'small'}
                     value={selectedKeys[0]}
                     onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
                     onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
@@ -43,7 +43,7 @@ export default function MaUsers() {
                     >
                         Search
                     </Button>
-                    <Button onClick={() => handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+                    <Button onClick={() => handleReset(clearFilters)} size="small" style={{ width: 95 }}>
                         Reset
                     </Button>
                 </Space>
@@ -67,27 +67,25 @@ export default function MaUsers() {
             ),
     });
 
-    const handleSearch = (selectedKeys) => {
-        // confirm();
+    const handleSearch = (selectedKeys, confirm) => {
         const params = {
             name: selectedKeys[0]
         }
         const searchUser = async () => {
             try {
                 const response = await usersApi.SearchUser(params);
-                // console.log(response.data)
                 setData(response.data)
             } catch (error) {
                 console.log('Failed to fetch: ', error);
             }
         }
         searchUser();
+        confirm();
     };
 
     const handleReset = clearFilters => {
         clearFilters();
         searchedColumn({})
-        document.location.reload()
     };
 
     const userDelete = (id) => {
@@ -156,8 +154,7 @@ export default function MaUsers() {
                 },
             ],
             onFilter: (value, record) => {
-
-                return record.is_admin.toString().indexOf(value) === 0
+                return record.is_admin.toString().indexOf(value) === 0;
             },
             render: is_admin => {
                 if (is_admin) {
@@ -196,12 +193,25 @@ export default function MaUsers() {
             ),
         },
     ];
+
+    const handleRefesh = () => {
+        const fetchAllUser = async () => {
+            try {
+                const response = await usersApi.getAll();
+                setData(response.data)
+            } catch (error) {
+                console.log('Failed to fetch: ', error);
+            }
+        }
+        fetchAllUser();
+    }
+
     return (
         <>
             <Row >
                 <Col span={24}>
                     <Divider style={{ margin: '0px' }} orientation="center">USER LIST</Divider>
-                    <Button size='middle' align="right" style={{ marginBottom: '5px' }} onClick={() => { document.location.reload(); }} icon={<RedoOutlined />} type='primary'>
+                    <Button size='middle' align="right" style={{ marginBottom: '5px' }} onClick={handleRefesh} icon={<RedoOutlined />} type='primary'>
                         Refesh
                     </Button>
                 </Col>

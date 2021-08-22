@@ -218,11 +218,21 @@ export default function RquestList() {
             align: 'center'
         },
     ];
-
+    const handleRefesh = () => {
+        const fetchAllReq = async () => {
+            try {
+                const response = await reqAPI.getAll();
+                setData(response.data)
+            } catch (error) {
+                console.log('Failed to fetch: ', error);
+            }
+        }
+        fetchAllReq();
+    }
     return (
         <>
             <Divider style={{ margin: "0" }} orientation="center">Mange Request</Divider>
-            <Button size='middle' align="right" style={{ marginBottom: '5px' }} onClick={() => { document.location.reload(); }} icon={<RedoOutlined />} type='primary'>
+            <Button size='middle' align="right" style={{ marginBottom: '5px' }} onClick={handleRefesh} icon={<RedoOutlined />} type='primary'>
                 Refesh
             </Button>
             <Table rowKey='id' size='middle' columns={columns} pagination={pagination} dataSource={data} />

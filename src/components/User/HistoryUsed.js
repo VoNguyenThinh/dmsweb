@@ -7,7 +7,7 @@ import userApi from '../../api/setup/usersApi'
 export default function HistoryUsed() {
     const { id } = useParams()
     const [data, setData] = useState()
-    const history = useHistory()
+    // const history = useHistory()
     const pagination = {
         position: ["bottomcenter"],
         defaultPageSize: 10,
@@ -117,13 +117,27 @@ export default function HistoryUsed() {
         },
 
     ]
+    const handeleResh = () => {
+        const params = {
+            id: id
+        }
+        const HistoryUser = async () => {
+            try {
+                const response = await userApi.historyUsed(params);
+                setData(response.data)
+            } catch (error) {
+                console.log('Failed to fetch: ', error);
+            }
+        }
+        HistoryUser();
+    }
     return (
         <>
             <Row>
 
                 <Col span={24}>
                     <Divider style={{ margin: '0px' }} orientation="center">HISTORY USERD</Divider>
-                    <Button size='middle' align="right" style={{ marginBottom: '5px', marginRight: '7px' }} onClick={() => { history.goBack() }} icon={<LeftCircleOutlined />} type='primary'>
+                    <Button size='middle' align="right" style={{ marginBottom: '5px', marginRight: '7px' }} onClick={handeleResh} icon={<LeftCircleOutlined />} type='primary'>
                         Back to list
                     </Button>
                     <Button size='middle' align="right" style={{ marginBottom: '5px' }} onClick={() => { document.location.reload(); }} icon={<RedoOutlined />} type='primary'>
